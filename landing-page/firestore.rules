@@ -1,0 +1,240 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ========================================================================
+    // HELPER FUNCTIONS
+    // ========================================================================
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isValidEmail(email) {
+      return email is string 
+        && email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')
+        && email.size() <= 254;
+    }
+    
+    function isValidTimestamp() {
+      return request.resource.data.createdAt == request.time;
+    }
+    
+    // ========================================================================
+    // LANDING PAGE COLLECTIONS (Public Access)
+    // ========================================================================
+    
+    // Email waitlist collection
+    // Anyone can submit their email, but cannot read others' emails
+    match /emails/{emailId} {
+      // Nobody can read emails (only admins via Firebase Console)
+      allow read: if false;
+      
+      // Anyone can create an email entry (waitlist signup)
+      allow create: if 
+        // Must have required fields only
+        request.resource.data.keys().hasOnly(['email', 'createdAt', 'notified'])
+        // Email must be valid format
+        && isValidEmail(request.resource.data.email)
+        // Timestamp must be server time
+        && isValidTimestamp()
+        // Notified flag must be false initially
+        && request.resource.data.notified == false;
+      
+      // Nobody can update or delete (prevent spam/abuse)
+      allow update, delete: if false;
+    }
+    
+    // Survey responses collection
+    // Anyone can submit, but cannot read others' responses
+    match /surveys/{surveyId} {
+      // Nobody can read surveys (only admins via Firebase Console)
+      allow read: if false;
+      
+      // Anyone can create a survey response
+      allow create: if 
+        // Must have required fields
+        request.resource.data.keys().hasAll(['responses', 'createdAt'])
+        // Responses must be a map/object
+        && request.resource.data.responses is map
+        // Timestamp must be server time
+        && isValidTimestamp()
+        // Optional: limit response size to prevent abuse
+        && request.resource.data.size() < 50000; // ~50KB limit
+      
+      // Nobody can update or delete
+      allow update, delete: if false;
+    }
+    
+    // ========================================================================
+    // GAME APP COLLECTIONS (Authenticated Access)
+    // ========================================================================
+    
+    // Game rooms collection
+    match /rooms/{roomId} {
+      
+      // Helper to check if user is in the room
+      function isInRoom() {
+        return isSignedIn() 
+          && request.auth.uid in resource.data.playerUids;
+      }
+      
+      // Helper to check if user is the host
+      function isHost() {
+        return isSignedIn() 
+          && request.auth.uid == resource.data.hostId;
+      }
+      
+      // Helper to validate player object
+      function isValidPlayer(player) {
+        return player.keys().hasOnly(['uid', 'isHost', 'displayName', 'photoURL'])
+          && player.uid is string
+          && player.isHost is bool
+          && (player.displayName is string || player.displayName == null)
+          && (player.photoURL is string || player.photoURL == null);
+      }
+      
+      // Helper to validate new host is in playerUids
+      function newHostIsPlayer() {
+        return request.resource.data.hostId in request.resource.data.playerUids;
+      }
+      
+      // READ: Only players in the room can read it
+      allow read: if isInRoom();
+      
+      // CREATE: Authenticated users can create rooms
+      allow create: if isSignedIn()
+        // Must have required fields only
+        && request.resource.data.keys().hasOnly(['hostId', 'players', 'playerUids', 'createdAt', 'status', 'maxPlayers'])
+        // Creator must be the host
+        && request.resource.data.hostId == request.auth.uid
+        // Must start with exactly 1 player (the host)
+        && request.resource.data.playerUids.size() == 1
+        && request.resource.data.playerUids[0] == request.auth.uid
+        && request.resource.data.players.size() == 1
+        // Validate player structure
+        && isValidPlayer(request.resource.data.players[0])
+        && request.resource.data.players[0].uid == request.auth.uid
+        && request.resource.data.players[0].isHost == true
+        // Status must be 'waiting'
+        && request.resource.data.status == 'waiting'
+        // Max players must be reasonable (2-10)
+        && request.resource.data.maxPlayers >= 2
+        && request.resource.data.maxPlayers <= 10
+        // Timestamp must be server time
+        && isValidTimestamp();
+      
+      // UPDATE: Different rules for different scenarios
+      allow update: if isSignedIn() && (
+        
+        // Scenario 1: Host updating room settings
+        (isHost()
+          // Host can change status, maxPlayers
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'maxPlayers', 'startedAt'])
+          // hostId and players cannot be changed in this scenario
+          && request.resource.data.hostId == resource.data.hostId
+          && request.resource.data.playerUids == resource.data.playerUids
+          && request.resource.data.players == resource.data.players
+        )
+        
+        // Scenario 2: Player joining the room
+        || (!isInRoom()
+          // Can only modify players and playerUids
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['players', 'playerUids'])
+          // Can only add yourself
+          && request.auth.uid in request.resource.data.playerUids
+          && !(request.auth.uid in resource.data.playerUids)
+          // Arrays must stay in sync
+          && request.resource.data.players.size() == request.resource.data.playerUids.size()
+          // Cannot exceed max players
+          && request.resource.data.playerUids.size() <= resource.data.maxPlayers
+          // Cannot join if game already started
+          && resource.data.status == 'waiting'
+          // Validate all player objects
+          && request.resource.data.players.size() <= 10 // Safety limit
+        )
+        
+        // Scenario 3: Player leaving the room
+        || (isInRoom()
+          // Can only modify players, playerUids, and possibly hostId
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['players', 'playerUids', 'hostId'])
+          // Must be removing yourself
+          && !(request.auth.uid in request.resource.data.playerUids)
+          && request.auth.uid in resource.data.playerUids
+          // Arrays must stay in sync
+          && request.resource.data.players.size() == request.resource.data.playerUids.size()
+          // If you were host, must transfer to someone in the room
+          && (resource.data.hostId != request.auth.uid 
+              || newHostIsPlayer())
+        )
+        
+        // Scenario 4: Host kicking a player
+        || (isHost()
+          // Can only modify players and playerUids
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['players', 'playerUids'])
+          // Must be removing someone else (not yourself)
+          && request.resource.data.playerUids.size() < resource.data.playerUids.size()
+          && request.auth.uid in request.resource.data.playerUids
+          // Arrays must stay in sync
+          && request.resource.data.players.size() == request.resource.data.playerUids.size()
+        )
+        
+        // Scenario 5: Host transfer (explicit)
+        || (isHost()
+          // Only changing hostId
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['hostId', 'players'])
+          // New host must be in the room
+          && newHostIsPlayer()
+          // Update isHost flags in players array
+          && request.resource.data.playerUids == resource.data.playerUids
+        )
+      );
+      
+      // DELETE: Only host can delete room
+      allow delete: if isHost();
+      
+      // Room game state subcollection (for actual game data)
+      match /state/{stateDoc} {
+        // Only players in parent room can read state
+        allow read: if isSignedIn() 
+          && request.auth.uid in get(/databases/$(database)/documents/rooms/$(roomId)).data.playerUids;
+        
+        // Only host can write state
+        allow write: if isSignedIn() 
+          && request.auth.uid == get(/databases/$(database)/documents/rooms/$(roomId)).data.hostId;
+      }
+    }
+    
+    // ========================================================================
+    // USER PROFILES (Optional - if you need user data)
+    // ========================================================================
+    
+    match /users/{userId} {
+      // Users can read their own profile
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      
+      // Users can create their own profile
+      allow create: if isSignedIn() 
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly(['displayName', 'photoURL', 'createdAt'])
+        && isValidTimestamp();
+      
+      // Users can update their own profile
+      allow update: if isSignedIn() 
+        && request.auth.uid == userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'photoURL']);
+      
+      // Users cannot delete profiles
+      allow delete: if false;
+    }
+    
+    // ========================================================================
+    // DENY ALL OTHER COLLECTIONS
+    // ========================================================================
+    
+    // Explicitly deny access to any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

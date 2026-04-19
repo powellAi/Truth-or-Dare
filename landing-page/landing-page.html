@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - Truth or Dare</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Newsreader:wght@600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #FF6B35;
+            --dark: #0A0E27;
+            --light: #F5F5F0;
+            --gray: #8B8B8B;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, var(--accent) 35px, var(--accent) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, var(--accent) 35px, var(--accent) 70px);
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(70px, 70px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo {
+            font-family: 'Newsreader', serif;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .status {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Newsreader', serif;
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--light) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: clamp(18px, 3vw, 24px);
+            color: var(--gray);
+            margin-bottom: 48px;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .notify-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+        }
+
+        .notify-section h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .notify-section p {
+            color: var(--gray);
+            margin-bottom: 24px;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--light);
+            font-size: 16px;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn {
+            padding: 16px 32px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: #FF8556;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .success-message {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: #34D399;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #EF4444;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            margin-top: 12px;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .install-section {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            animation: fadeInUp 0.8s ease-out 0.8s backwards;
+        }
+
+        .install-section h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .install-section p {
+            color: var(--gray);
+            margin-bottom: 24px;
+        }
+
+        .install-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .install-prompt {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: #34D399;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .install-prompt.show {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            padding-bottom: 40px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .email-form { flex-direction: column; }
+            .install-buttons { flex-direction: column; }
+            .notify-section, .install-section { padding: 24px; }
+        }
+
+        /* screenshots — only addition */
+        .screenshots-section {
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out 0.7s backwards;
+        }
+        .screenshots-section h2 { font-size: 24px; margin-bottom: 8px; font-weight: 600; }
+        .screenshots-section p { color: var(--gray); margin-bottom: 24px; }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .screenshot-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshot-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 107, 53, 0.4);
+        }
+        .screenshot-card img { width: 100%; height: auto; display: block; object-fit: cover; }
+        .screenshot-card .caption {
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray);
+            text-align: center;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.open { display: flex; animation: fadeIn 0.2s ease-out; }
+        .lightbox img { max-height: 90vh; max-width: 90vw; border-radius: 16px; object-fit: contain; }
+        .lightbox-close {
+            position: absolute;
+            top: 24px; right: 24px;
+            background: rgba(255,255,255,0.1);
+            border: none; color: white;
+            font-size: 24px;
+            width: 44px; height: 44px;
+            border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        @media (max-width: 768px) {
+            .screenshots-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        /* end screenshots */
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">Truth or <span>Dare</span></div>
+            <div class="status">Coming Soon</div>
+        </header>
+
+        <div class="hero">
+            <h1>
+                The Ultimate <span class="gradient-text">Truth or Dare</span><br>
+                Experience
+            </h1>
+            
+            <p class="subtitle">
+                Play with friends online or locally. Real-time multiplayer, custom questions, and more. Launching soon.
+            </p>
+
+            <div class="notify-section">
+                <h2>🎉 Be the First to Know</h2>
+                <p>Get notified when we launch. No spam, just the good stuff.</p>
+                
+                <form class="email-form" id="emailForm">
+                    <input 
+                        type="email" 
+                        class="email-input" 
+                        placeholder="Enter your email"
+                        id="emailInput"
+                        required
+                    >
+                    <button type="submit" class="btn" id="submitBtn">Notify Me</button>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    ✓ Awesome! We'll email you when we launch.
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+
+            <!-- screenshots — only addition -->
+            <div class="screenshots-section">
+                <h2>📸 See It In Action</h2>
+                <p>A peek at what's coming.</p>
+                <div class="screenshots-grid">
+                    <div class="screenshot-card" onclick="openLightbox('screenshots/Home.jpg')">
+                        <img src="screenshots/Home.jpg" alt="Home screen" loading="lazy" />
+                        <div class="caption">Home</div>
+                    </div>
+                    <div class="screenshot-card" onclick="openLightbox('screenshots/online.jpg')">
+                        <img src="screenshots/online.jpg" alt="Online play" loading="lazy" />
+                        <div class="caption">Online Play</div>
+                    </div>
+                    <div class="screenshot-card" onclick="openLightbox('screenshots/Dare.jpg')">
+                        <img src="screenshots/Dare.jpg" alt="Dare screen" loading="lazy" />
+                        <div class="caption">Dare</div>
+                    </div>
+                    <div class="screenshot-card" onclick="openLightbox('screenshots/Settings.jpg')">
+                        <img src="screenshots/Settings.jpg" alt="Settings screen" loading="lazy" />
+                        <div class="caption">Settings</div>
+                    </div>
+                </div>
+            </div>
+            <!-- end screenshots -->
+
+            <div class="install-section">
+                <h2>📱 Install on Your Device</h2>
+                <p>Use our app like a native app. No app store needed!</p>
+                
+                <div class="install-prompt" id="installPrompt">
+                    ✓ Ready to install! Click the button below.
+                </div>
+
+                <div class="install-buttons">
+                    <button class="btn" id="installBtn" style="display: none;">Install App</button>
+                    <button class="btn btn-secondary" id="manualInstallBtn">How to Install</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            © 2025 Truth or Dare. All rights reserved.
+        </footer>
+    </div>
+
+    <!-- lightbox — only addition -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <img id="lightboxImg" src="" alt="Screenshot" onclick="event.stopPropagation()" />
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2BIfL41WyDTFX-FV9ArZl2kB0GJNIG14",
+            authDomain: "truth-or-dare-46a9e.firebaseapp.com",
+            projectId: "truth-or-dare-46a9e",
+            storageBucket: "truth-or-dare-46a9e.firebasestorage.app",
+            messagingSenderId: "410442463021",
+            appId: "1:410442463021:web:80a9ed95cb715cb089c5a4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Rate limiting — max 1 submission per email per session
+        const submittedEmails = new Set();
+
+        // Rate limiting — max 3 attempts per session
+        let attemptCount = 0;
+        const MAX_ATTEMPTS = 3;
+
+        document.getElementById('emailForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('emailInput').value.trim().toLowerCase()
+            const submitBtn = document.getElementById('submitBtn')
+            const successMsg = document.getElementById('successMessage')
+            const errorMsg = document.getElementById('errorMessage')
+
+            errorMsg.classList.remove('show')
+            successMsg.classList.remove('show')
+
+            // Rate limit check
+            if (attemptCount >= MAX_ATTEMPTS) {
+                errorMsg.textContent = 'Too many attempts. Please try again later.'
+                errorMsg.classList.add('show')
+                return
+            }
+
+            // Already submitted this session
+            if (submittedEmails.has(email)) {
+                errorMsg.textContent = 'This email is already registered!'
+                errorMsg.classList.add('show')
+                return
+            }
+
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            if (!emailRegex.test(email)) {
+                errorMsg.textContent = 'Please enter a valid email address.'
+                errorMsg.classList.add('show')
+                return
+            }
+
+            attemptCount++
+            submitBtn.disabled = true
+            submitBtn.textContent = 'Saving...'
+
+            try {
+                // Check if email already exists in Firestore
+                const q = query(collection(db, 'launch-subscribers'), where('email', '==', email))
+                const existing = await getDocs(q)
+
+                if (!existing.empty) {
+                    errorMsg.textContent = 'This email is already on the list!'
+                    errorMsg.classList.add('show')
+                    submitBtn.disabled = false
+                    submitBtn.textContent = 'Notify Me'
+                    return
+                }
+
+                await addDoc(collection(db, 'launch-subscribers'), {
+                    email,
+                    subscribedAt: serverTimestamp(),
+                    notified: false
+                })
+
+                submittedEmails.add(email)
+                document.getElementById('emailInput').value = ''
+                successMsg.classList.add('show')
+                submitBtn.textContent = 'Done!'
+
+                setTimeout(() => successMsg.classList.remove('show'), 5000)
+
+            } catch (error) {
+                console.error('Error:', error)
+                errorMsg.textContent = 'Something went wrong. Please try again.'
+                errorMsg.classList.add('show')
+                submitBtn.disabled = false
+                submitBtn.textContent = 'Notify Me'
+            }
+        })
+    </script>
+
+    <script>
+        // lightbox — only addition
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src
+            document.getElementById('lightbox').classList.add('open')
+            document.body.style.overflow = 'hidden'
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open')
+            document.body.style.overflow = ''
+        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox() })
+
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+            document.getElementById('installPrompt').classList.add('show');
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response: ${outcome}`);
+                deferredPrompt = null;
+                document.getElementById('installBtn').style.display = 'none';
+                document.getElementById('installPrompt').classList.remove('show');
+            }
+        });
+
+        document.getElementById('manualInstallBtn').addEventListener('click', () => {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            if (isMobile) {
+                alert(`📱 To install on mobile:\n\n1. Tap the Share button (iOS) or Menu (Android)\n2. Select "Add to Home Screen"\n3. Tap "Add" to confirm`);
+            } else {
+                alert(`💻 To install on Chrome:\n\n1. Click the ⋮ menu (top right)\n2. Select "Install Truth or Dare"\n3. Click "Install" to confirm`);
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredPrompt = null;
+        });
+    </script>
+</body>
+</html>

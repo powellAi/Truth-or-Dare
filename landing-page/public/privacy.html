@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Truth or Dare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #ffffff;
+            --text: #111111;
+            --text-muted: #888888;
+            --text-dim: #bbbbbb;
+            --border: rgba(0,0,0,0.12);
+            --surface: #f5f5f5;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            z-index: 10;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .back-link {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .content {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 120px 24px 80px;
+        }
+
+        .page-label {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+        }
+
+        .last-updated {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 40px 0 10px;
+            color: var(--text);
+        }
+
+        p {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        ul {
+            margin: 0 0 16px 20px;
+        }
+
+        ul li {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        a { color: var(--text); }
+
+        .highlight-box {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 32px;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 40px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <a href="index.html" class="logo">Truth or Dare</a>
+        <a href="index.html" class="back-link">← Back</a>
+    </div>
+
+    <div class="content">
+        <p class="page-label">Legal</p>
+        <h1>Privacy Policy</h1>
+        <p class="last-updated">Last updated: January 2025</p>
+
+        <div class="highlight-box">
+            <p>We keep this simple: we only collect what we need, we don't sell your data, and you can ask us to delete it at any time.</p>
+        </div>
+
+        <h2>1. Who We Are</h2>
+        <p>Truth or Dare is an app that lets you play Truth or Dare with friends online or locally. This Privacy Policy explains how we handle your information when you use our app or visit our website.</p>
+        <p>If you have any questions, contact us at: <a href="mailto:privacy@truthordare.app">privacy@truthordare.app</a></p>
+
+        <h2>2. What We Collect</h2>
+        <p>We only collect information you voluntarily provide:</p>
+        <ul>
+            <li><strong>Email address</strong> — if you sign up to be notified at launch.</li>
+            <li><strong>Survey responses</strong> — if you choose to fill out our feedback form. These are anonymous unless you include identifying information in the open text field.</li>
+            <li><strong>Custom questions</strong> — if you create custom questions inside the app. These are stored to power your game sessions.</li>
+        </ul>
+        <p>We do <strong>not</strong> collect your name, location, phone number, or payment information (the app is free).</p>
+
+        <h2>3. How We Use Your Information</h2>
+        <ul>
+            <li>Your email is used only to notify you when the app launches. We will not email you for any other reason without your permission.</li>
+            <li>Survey responses are used to improve the app. We look at aggregate trends, not individual answers.</li>
+            <li>Custom questions are used solely to run your game sessions.</li>
+        </ul>
+
+        <h2>4. How We Store Your Data</h2>
+        <p>We use <strong>Google Firebase / Firestore</strong> to store data securely. Firebase is a Google-owned platform that complies with GDPR and other major data protection frameworks. Your data is stored in secure cloud servers and is not accessible to unauthorized parties.</p>
+        <p>Learn more: <a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Privacy and Security</a></p>
+
+        <h2>5. Data Sharing</h2>
+        <p>We do not sell, rent, or share your personal data with third parties, advertisers, or data brokers. Ever.</p>
+        <p>The only exception is service providers who help us operate the app (e.g., Firebase/Google), who are bound by their own privacy policies.</p>
+
+        <h2>6. Children's Privacy (COPPA)</h2>
+        <p>Our app is intended for users aged 13 and older. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has submitted their email, please contact us immediately at <a href="mailto:privacy@truthordare.app">privacy@truthordare.app</a> and we will delete it promptly.</p>
+
+        <h2>7. Your Rights</h2>
+        <p>Depending on where you live, you may have the right to:</p>
+        <ul>
+            <li>Access the data we hold about you</li>
+            <li>Request correction of inaccurate data</li>
+            <li>Request deletion of your data ("right to be forgotten")</li>
+            <li>Withdraw consent at any time (e.g., unsubscribe from launch emails)</li>
+        </ul>
+        <p>To exercise any of these rights, email us at <a href="mailto:privacy@truthordare.app">privacy@truthordare.app</a> and we'll respond within 30 days.</p>
+
+        <h2>8. Cookies</h2>
+        <p>We use a single session cookie to remember your age gate confirmation so you don't have to confirm it on every visit. We do not use advertising cookies or tracking pixels.</p>
+
+        <h2>9. Changes to This Policy</h2>
+        <p>If we make significant changes to this policy, we will update the "Last updated" date at the top and, where appropriate, notify subscribers by email.</p>
+
+        <h2>10. Contact</h2>
+        <p>Questions, requests, or concerns: <a href="mailto:privacy@truthordare.app">privacy@truthordare.app</a></p>
+    </div>
+
+    <footer>
+        Truth or Dare &nbsp;•&nbsp; © 2025 &nbsp;•&nbsp;
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+    </footer>
+
+</body>
+</html>
