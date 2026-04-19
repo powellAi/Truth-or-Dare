@@ -1,4 +1,4 @@
-# 🎯 Truth or Dare
+# Truth or Dare
 
 > A fast, fun, and social Truth or Dare game for friends and parties — play locally or challenge friends online in real time.
 Just a project that ended on git-hub
