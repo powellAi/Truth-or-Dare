@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // USERS COLLECTION
+    // - Any logged-in user can read a profile (e.g. to show display names)
+    // - Only the owner can update or delete their own profile
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // POSTS COLLECTION
+    // - Anyone can read posts (public feed)
+    // - Only logged-in users can create a post
+    // - Only the post author can edit or delete their post
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.authorId == request.auth.uid;
+      allow update, delete: if request.auth != null
+        && resource.data.authorId == request.auth.uid;
+    }
+
+    // BLOCK EVERYTHING ELSE
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+  }
+}

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
+
+    <!-- PWA Manifest — tells the browser this is installable -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Theme color — controls browser chrome color on Android -->
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Standard favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- PNG fallback favicon for browsers that don't support SVG -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
+
+    <!-- Apple home screen icon (iPhones/iPads) -->
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+
+    <!-- Apple PWA mode — hides Safari browser chrome when launched from home screen -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-status-bar-style" content="default" />
+    <meta name="mobile-web-app-title" content="Truth or Dare" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Truth or Dare</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

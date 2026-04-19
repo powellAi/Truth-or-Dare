@@ -1,0 +1,59 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #2e3338;
+  --surface: #111111;
+  --surface2: #1a1a1a;
+  --accent: #e2e2e2;
+  --accent2: #ffffff;
+  --accent-dim: #a0a0a0;
+  --danger: #c0392b;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --text: #f0f0f0;
+  --text-muted: #555555;
+  --border: #222222;
+  --card: #111111;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+input, select {
+  font-family: inherit;
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 2px;
+}
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background: #ffffff; /* match your light theme default */
+  min-height: 100vh;
+}
