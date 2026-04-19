@@ -1,12 +1,11 @@
 # 🎯 Truth or Dare
 
 > A fast, fun, and social Truth or Dare game for friends and parties — play locally or challenge friends online in real time.
-
-![Home Screen](screenshots/Home.jpg)
+Just a project that ended on git-hub
 
 ---
 
-## 📱 Screenshots
+## Screenshots
 
 | Home | Gameplay | Online Mode | Settings |
 |------|----------|-------------|----------|
@@ -14,22 +13,22 @@
 
 ---
 
-## ✨ Features
+## Features
 
-- 🎮 **Play Local** — Pass the phone around and take turns with friends
-- 🌐 **Play Online** — Create or join a room with a code and play with friends remotely
-- 👥 **Friends System** — Search for friends by username and see their online status
-- ⏱️ **Timer** — Each dare comes with a countdown timer to keep things exciting
-- 🏆 **Scoring** — Players earn points for completing truths and dares
-- ⏭️ **Skip System** — Limited skips per game to keep it fair
-- 🔔 **Notifications** — Get notified when friends invite you to a room
-- 🌙 **Light / Dark Mode** — Switch between themes in settings
-- 🔊 **Timer Sound** — Audio cues to keep players on track
-- 📖 **How to Play** — Built-in rules for both local and online modes
+- **Play Local** — Pass the phone around and take turns with friends
+- **Play Online** — Create or join a room with a code and play with friends remotely
+- **Friends System** — Search for friends by username and see their online status
+- **Timer** — Each dare comes with a countdown timer to keep things exciting
+- **Scoring** — Players earn points for completing truths and dares
+- **Skip System** — Limited skips per game to keep it fair
+- **Notifications** — Get notified when friends invite you to a room
+- **Light / Dark Mode** — Switch between themes in settings
+- **Timer Sound** — Audio cues to keep players on track
+-  **How to Play** — Built-in rules for both local and online modes
 
 ---
 
-## 🛠️ Built With
+## Built With
 
 - [React](https://react.dev/) — UI framework
 - [Vite](https://vitejs.dev/) — Lightning fast build tool
@@ -38,7 +37,7 @@
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -77,7 +76,7 @@ Make sure you have the following installed:
 
 ---
 
-## 🎮 How to Play
+## How to Play
 
 ### Local Mode
 1. Add player names
@@ -94,7 +93,7 @@ Make sure you have the following installed:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 Truth-or-Dare/
@@ -111,19 +110,19 @@ Truth-or-Dare/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to open an issue or submit a pull request.
 
 ---
 
-## 👤 Author
+## Author
 
 **powellAi**
 - GitHub: [@powellAi](https://github.com/powellAi)
 
 ---
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
